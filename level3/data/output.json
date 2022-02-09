@@ -1,0 +1,53 @@
+{
+    "comissions": [
+        {
+            "user_id": 1,
+            "comissions": {
+                "2018-05": 225,
+                "2018-06": 185
+            }
+        },
+        {
+            "user_id": 2,
+            "comissions": {
+                "2018-05": 112.5,
+                "2018-06": 105,
+                "2018-07": 45
+            }
+        }
+    ],
+    "deals": [
+        {
+            "id": 1,
+            "comission": 25
+        },
+        {
+            "id": 3,
+            "comission": 95
+        },
+        {
+            "id": 5,
+            "comission": 105
+        },
+        {
+            "id": 6,
+            "comission": 150
+        },
+        {
+            "id": 8,
+            "comission": 35
+        },
+        {
+            "id": 2,
+            "comission": 112.5
+        },
+        {
+            "id": 4,
+            "comission": 105
+        },
+        {
+            "id": 7,
+            "comission": 45
+        }
+    ]
+}
