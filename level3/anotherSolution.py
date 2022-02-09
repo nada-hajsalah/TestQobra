@@ -38,40 +38,25 @@ def readData(pathFileInput):
     return df
 
 
-def calculComission(amount, currentAmount, objective):
-    """calculation of commission for each deal
+def calculComission(totalAmount, objective):
+    """calculation of commission on the total amount
 
-    :param amount: the amount of a deal
-    :type amount: float
-    :param currentAmount: the cumulative sum of amount
-    :type amount: float
+    :param totalAmount: total sales amount  for each user
+    :type totalAmount: float
     :param objective: target amount of commission that each user wants to achieve
     :type objective: float
     :return: a number
     :rtype: float
     """
-    comission = 0
-    precedentamount = currentAmount-amount
-    demiObjective = 0.5*objective
-    if currentAmount > objective:
-        if precedentamount >= objective:
-            comission = 0.15*amount
-        elif precedentamount >= demiObjective:
-            comission = (currentAmount-objective)*0.15
-            comission += (amount-(currentAmount-objective)) * \
-                0.1  # interval[50%-100%]
-        else:
-            comission = (currentAmount-objective)*0.15
-            comission += demiObjective*0.15  # two intervals
-    elif currentAmount > demiObjective:
-        if precedentamount >= demiObjective:
-            comission = amount*0.1
-        else:
+    demiObjective = objective * 0.5
+    comission = 0.05*demiObjective
+    if (totalAmount > objective):
+        comission += 0.15*(totalAmount-objective)
+        comission += demiObjective * 0.1
+    elif (totalAmount > demiObjective):
+        comission += 0.1*(totalAmount-(objective*0.5))
+        comission += demiObjective * 0.05
 
-            comission = (currentAmount-demiObjective)*0.1
-            comission += (amount-(currentAmount-demiObjective))*0.05
-    else:
-        comission = amount*0.05  # intervall[0%-50%]
     return comission
 
 
@@ -84,9 +69,9 @@ def applyCalcul(data):
         lambda x: x.cumsum())  # add up the amount for each month for each user
 
     data["comission"] = data.apply(lambda x: calculComission(
-        x.amount, x.currentAmount, x.objective), axis=1)
+        x.currentAmount,  x.objective), axis=1)#calculate the commission for the accumulated amount
 
-    # data["comission"]=data.groupby(['user_id','close_date'])["comission"].diff().fillna(data['comission'])
+    data["comission"]=data.groupby(['user_id','close_date'])["comission"].diff().fillna(data['comission'])#cumulative subtraction
     data = data.reset_index()
 
     return data
